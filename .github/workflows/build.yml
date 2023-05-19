@@ -16,17 +16,11 @@ jobs:
           - 7.3
           - 7.4
           - 8.0
+          - 8.1
+          - 8.2
         deps:
           - lowest
           - highest
-        include:
-          - php: 8.1
-            deps: highest
-            composer-options: --ignore-platform-reqs
-        exclude:
-          # that config currently breaks as older PHPUnit cannot generate coverage on PHP 8
-          - php: 8
-            deps: lowest
 
     runs-on: ubuntu-latest
     steps:
@@ -41,6 +35,8 @@ jobs:
         with:
           dependency-versions: ${{ matrix.deps }}
           composer-options: ${{ matrix.composer-options }}
+
+      - run: composer update phpunit/phpunit --with-dependencies
 
       - run: vendor/bin/phpunit --coverage-clover=coverage.xml --whitelist lib --bootstrap vendor/autoload.php tests
 
