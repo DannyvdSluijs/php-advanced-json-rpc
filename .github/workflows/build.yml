@@ -36,6 +36,8 @@ jobs:
           dependency-versions: ${{ matrix.deps }}
           composer-options: ${{ matrix.composer-options }}
 
+      - run: composer update phpunit/phpunit --with-dependencies
+
       - run: vendor/bin/phpunit --coverage-clover=coverage.xml --whitelist lib --bootstrap vendor/autoload.php tests
 
       - uses: codecov/codecov-action@v1
